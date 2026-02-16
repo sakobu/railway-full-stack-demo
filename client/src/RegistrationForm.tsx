@@ -1,6 +1,7 @@
 import { useForm } from "@railway-ts/use-form";
 import { ROOT_ERROR_KEY } from "@railway-ts/pipelines/schema";
 import { registrationSchema, type Registration } from "@demo/shared/schema";
+import { Input, Label, Button, ErrorMessage, CheckboxGroup } from "./components";
 
 export function RegistrationForm() {
   const form = useForm<Registration>(registrationSchema, {
@@ -54,8 +55,8 @@ export function RegistrationForm() {
     <form onSubmit={(e) => void form.handleSubmit(e)}>
       {/* Username */}
       <div className="field">
-        <label htmlFor={form.getFieldProps("username").id}>Username</label>
-        <input
+        <Label htmlFor={form.getFieldProps("username").id}>Username</Label>
+        <Input
           type="text"
           placeholder="john doe"
           autoComplete="username"
@@ -64,97 +65,98 @@ export function RegistrationForm() {
         {form.validatingFields.username && (
           <span className="checking">Checking availability…</span>
         )}
-        {form.touched.username && form.errors.username && (
-          <span className="error">{form.errors.username}</span>
-        )}
+        <ErrorMessage
+          message={form.touched.username ? form.errors.username : undefined}
+        />
       </div>
 
       {/* Email */}
       <div className="field">
-        <label htmlFor={form.getFieldProps("email").id}>Email</label>
-        <input
+        <Label htmlFor={form.getFieldProps("email").id}>Email</Label>
+        <Input
           type="email"
           placeholder="john@example.com"
           autoComplete="email"
           {...form.getFieldProps("email")}
         />
-        {form.touched.email && form.errors.email && (
-          <span className="error">{form.errors.email}</span>
-        )}
+        <ErrorMessage
+          message={form.touched.email ? form.errors.email : undefined}
+        />
       </div>
 
       {/* Password */}
       <div className="field">
-        <label htmlFor={form.getFieldProps("password").id}>Password</label>
-        <input
+        <Label htmlFor={form.getFieldProps("password").id}>Password</Label>
+        <Input
           type="password"
           placeholder="Min. 8 characters"
           autoComplete="new-password"
           {...form.getFieldProps("password")}
         />
-        {form.touched.password && form.errors.password && (
-          <span className="error">{form.errors.password}</span>
-        )}
+        <ErrorMessage
+          message={form.touched.password ? form.errors.password : undefined}
+        />
       </div>
 
       {/* Confirm Password */}
       <div className="field">
-        <label htmlFor={form.getFieldProps("confirmPassword").id}>
+        <Label htmlFor={form.getFieldProps("confirmPassword").id}>
           Confirm Password
-        </label>
-        <input
+        </Label>
+        <Input
           type="password"
           placeholder="Re-enter password"
           autoComplete="new-password"
           {...form.getFieldProps("confirmPassword")}
         />
-        {form.touched.confirmPassword && form.errors.confirmPassword && (
-          <span className="error">{form.errors.confirmPassword}</span>
-        )}
+        <ErrorMessage
+          message={
+            form.touched.confirmPassword
+              ? form.errors.confirmPassword
+              : undefined
+          }
+        />
       </div>
 
       {/* Age */}
       <div className="field">
-        <label htmlFor={form.getFieldProps("age").id}>Age</label>
-        <input
+        <Label htmlFor={form.getFieldProps("age").id}>Age</Label>
+        <Input
           type="number"
           min={0}
           max={120}
           placeholder="18"
           {...form.getFieldProps("age")}
         />
-        {form.touched.age && form.errors.age && (
-          <span className="error">{form.errors.age}</span>
-        )}
+        <ErrorMessage
+          message={form.touched.age ? form.errors.age : undefined}
+        />
       </div>
 
       {/* Contact Methods */}
-      <fieldset className="field">
-        <legend>Contact Methods (Optional)</legend>
-        <div className="checkbox-group">
-          {(["email", "phone", "sms"] as const).map((method) => (
-            <label
-              key={method}
-              htmlFor={form.getCheckboxGroupOptionProps("contacts", method).id}
-            >
-              <input
-                type="checkbox"
-                {...form.getCheckboxGroupOptionProps("contacts", method)}
-              />
-              {method.charAt(0).toUpperCase() + method.slice(1)}
-            </label>
-          ))}
-        </div>
-      </fieldset>
+      <CheckboxGroup legend="Contact Methods (Optional)">
+        {(["email", "phone", "sms"] as const).map((method) => (
+          <label
+            key={method}
+            htmlFor={form.getCheckboxGroupOptionProps("contacts", method).id}
+          >
+            <Input
+              type="checkbox"
+              {...form.getCheckboxGroupOptionProps("contacts", method)}
+            />
+            {method.charAt(0).toUpperCase() + method.slice(1)}
+          </label>
+        ))}
+      </CheckboxGroup>
 
       {/* Form-level errors */}
       {form.errors[ROOT_ERROR_KEY] && (
         <div className="form-error">{form.errors[ROOT_ERROR_KEY]}</div>
       )}
 
-      <button type="submit" disabled={form.isSubmitting || form.isValidating}>
+      <Button type="submit" disabled={form.isSubmitting || form.isValidating}>
         {form.isSubmitting ? "Registering…" : "Create Account"}
-      </button>
+      </Button>
     </form>
   );
 }
