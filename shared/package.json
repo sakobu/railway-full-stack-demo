@@ -1,0 +1,9 @@
+{
+  "name": "@demo/shared",
+  "version": "0.0.1",
+  "private": true,
+  "main": "schema.ts",
+  "dependencies": {
+    "@railway-ts/pipelines": "^0.1.17"
+  }
+}
