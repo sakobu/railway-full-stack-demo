@@ -1,12 +1,12 @@
+import path from "path";
 import express from "express";
-import cors from "cors";
+import { createServer as createViteServer } from "vite";
 import { validate, formatErrors } from "@railway-ts/pipelines/schema";
 import { pipeAsync } from "@railway-ts/pipelines/composition";
 import { ok, err, flatMapWith, match } from "@railway-ts/pipelines/result";
 import { registrationSchema, type Registration } from "@demo/shared/schema";
 
 const app = express();
-app.use(cors({ origin: "http://localhost:5173" }));
 app.use(express.json());
 
 // ── Fake DB ──────────────────────────────────────────────────────────────────
@@ -63,9 +63,18 @@ app.post("/api/register", async (req, res) => {
   res.status(status).json(body);
 });
 
-// ── Start ────────────────────────────────────────────────────────────────────
+// ── Vite middleware + Start ──────────────────────────────────────────────────
 
-const PORT = 3001;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+(async () => {
+  const vite = await createViteServer({
+    root: path.resolve(__dirname, "../../client"),
+    server: { middlewareMode: true },
+    appType: "spa",
+  });
+  app.use(vite.middlewares);
+
+  const PORT = 3001;
+  app.listen(PORT, () => {
+    console.log(`Dev server on http://localhost:${PORT}`);
+  });
+})();
