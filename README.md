@@ -4,6 +4,8 @@ Full-stack registration form where **one schema** drives types, validation, and 
 
 Built with [`@railway-ts/pipelines`](https://github.com/sakobu/railway-ts-pipelines) + [`@railway-ts/use-form`](https://github.com/sakobu/railway-ts-use-form).
 
+[**Live demo on StackBlitz**](https://stackblitz.com/github/sakobu/stackblitz-demo)
+
 ## Structure
 
 ```
@@ -32,5 +34,5 @@ Built with [`@railway-ts/pipelines`](https://github.com/sakobu/railway-ts-pipeli
 
 ```bash
 npm install
-npm run dev          # starts server (:3001) + client (:5173) concurrently
+npm run dev          # starts dev server on :3001
 ```
